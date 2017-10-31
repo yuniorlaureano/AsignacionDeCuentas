@@ -1,4 +1,5 @@
-﻿
+﻿@model Entity.Results.ExcelResult
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,7 +7,7 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="panel">
+        <div class="panel" id="panel-upload-file">
             <div class="panel-body">
                 <div class="pad-btm form-inline">
                     <div class="row">
@@ -14,22 +15,34 @@
                         </div>
                         <div class="col-sm-6 table-toolbar-right">
                             <div class="btn-group">
-                                <div class="btn-group">
-                                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
-                                        <i class="fa fa-file-text-o" aria-hidden="true"> Hojas de excel</i>
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul role="menu" class="dropdown-menu dropdown-menu-right">
-                                        <li><a href="#">Action</a></li>
-                                        <li><a href="#">Action</a></li>
-                                        <li><a href="#">Action</a></li>
-                                    </ul>
+                                <div class="btn-group">                                    
+                                    @using (Html.BeginForm("Index", "Account", FormMethod.Post, new { id="form-end-excel-sheets" }))
+                                    {                                        
+                                        <input type="hidden"  value="" name="sheet" id="sheet"/>
+                                     
+                                        <button data-toggle="dropdown" type="button" class="btn btn-default dropdown-toggle">
+                                            <i class="fa fa-file-text-o" aria-hidden="true"> Hojas de excel</i>
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                                            @if (Model.Sheets != null)
+                                            {
+                                                foreach (var sheets in Model.Sheets)
+                                                {
+                                                    <li><a href="#" class="command-button-sheet">@sheets</a></li>
+                                                }
+                                            }
+                                        </ul>
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <table class="table table-hover table-vcenter">
+                @using (Html.BeginForm("UploadExcel", "Assignment", FormMethod.Post, new { id = "form-upload-excel", enctype="multipart/form-data" }))
+                { 
+                    
+                 <table class="table table-hover table-vcenter">
                     <thead>
                         <tr>
                             <th class="min-width">Subir Archivo</th>
@@ -39,17 +52,116 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-center"><button class="btn btn-primary fa fa-cloud-upload fa-2x"></button></td>
+                            <td class="text-center"><button type="button" class="btn btn-primary fa fa-cloud-upload fa-2x" id="command-button-upload-file"></button></td>
                             <td>
-                                <span class="text-main text-semibold">Smartphone</span>
+                                <span class="text-main text-semibold file-name">Not file selected.</span>
                                 <br>
-                                <small class="text-muted">size: 7687</small>
+                                <small class="text-muted file-size">size: 0</small>
                             </td>
-                            <td class="text-center"><span class="text-success text-semibold">.xlsx</span></td>
+                            <td class="text-center file-type"><span class="text-success text-semibold">N/A</span></td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-center"></td>
+                            <td>
+                                <span class="text-main text-semibold file-name"></span>
+                            </td>
+                            <td class="text-center">
+                                <button type="submit" class="btn btn-info fa fa-upload btn-label"> Subir</button>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
+                <input type="file" name="excel" id="excel" style="visibility:hidden;" />
+                }
             </div>
         </div>
     </div>
 </div>
+
+@if (Model != null && Model.IsError)
+{
+    <div id="err-container" data-error="@Model.Message" data-stacktrace="@Model.StackTrace"></div>
+}
+
+@if (Model != null && Model.IsSucess)
+{
+    <div id="msg-container" data-message="@Model.Message"></div>
+}
+
+@section scripts{
+    <script>
+        $(function () {
+            
+            $("#command-button-upload-file").on("click", function () {
+                $("#excel").click();
+            });
+
+            showUploadedFileProperty();
+            showErrorMessage();
+            showMessage();
+            sendSheet();
+
+        });
+
+        function showUploadedFileProperty() {
+
+            $("#excel").on("change", function () {
+
+                var files = $(this)[0].files;
+
+                if (files.length > 0) {
+                    var file = files[0];
+                    console.log(file);
+                    $(".file-size").text(file.size);
+                    $(".file-name").text(file.name);
+                    $(".file-type").text(file.type);
+                }
+            });
+        }
+
+        function showErrorMessage() {
+
+            var errorc = $("#err-container");
+           
+            if (errorc.length != 0) {
+
+                var html = "<p>" + errorc.attr("data-error") + "</p>";
+                html += "<p>" + errorc.attr("data-stacktrace") + "</p>";
+
+                getTimerDialogMsg("danger", html, "panel-upload-file", 3000);
+            }
+
+        }
+
+        function showMessage() {
+
+            var messagec = $("#msg-container");
+            
+            if (messagec.length != 0) {
+
+                var html = "<p>" + messagec.attr("data-message") + "</p>";
+
+                getTimerDialogMsg("info", html, "panel-upload-file", 3000);
+            }
+
+        }
+
+        function sendSheet()
+        {
+            $(".command-button-sheet").on("click", function () {
+                var val = $(this).text();
+                var form = $($("#form-end-excel-sheets")[0]);
+                var inputElement = form.find("input#sheet");
+
+                inputElement.val(val);
+                if (inputElement.val() == val) {
+                    form.submit();
+                }
+            });
+            
+        }
+
+    </script>
+    }

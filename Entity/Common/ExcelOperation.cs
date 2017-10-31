@@ -22,6 +22,7 @@ namespace Entity.Common
         public string[] Sheets { get; set; }
         public string FileExtension { get; set; }
         public string FileName { get; set; }
+        public string FileNameWithLocation { get; set; }
         public Provider Provider { get; set; }
         public OleDbConnection OldbCn { get; set; }
         public string ConnectionString { get; set; }
@@ -97,11 +98,12 @@ namespace Entity.Common
         /// <param name="provider">Tipos of file, XLS or XLSX</param>
         /// <param name="fileName">The name of the excel file</param>
         /// <returns>string[]</returns>
-        public string[] GetSheetNames(Provider provider, string fileName)
+        public string[] GetSheetNames(Provider provider, string fileNameWithLocation)
         {
             try
             {
-                this.OpenConnection(provider, fileName);
+                this.FileNameWithLocation = fileNameWithLocation;
+                this.OpenConnection(provider, fileNameWithLocation);
                 DataTable sheets = this.OldbCn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
                 this.CloseConnection();
                 int count = sheets.Rows.Count;
@@ -131,13 +133,13 @@ namespace Entity.Common
         /// <param name="provider">Tipos of file, XLS or XLSX</param>
         /// <param name="fileName">The name of the excel file</param>
         /// <returns>OleDbDataReader</returns>
-        public OleDbDataReader GetData(string query, Provider provider, string fileName)
+        public OleDbDataReader GetData(string query, Provider provider, string fileNameWithLocation)
         {
             OleDbDataReader reader;
 
             try
             {
-                this.OpenConnection(provider, fileName);
+                this.OpenConnection(provider, fileNameWithLocation);
                 OleDbCommand command = new OleDbCommand(query, this.OldbCn);
                 command.CommandType = System.Data.CommandType.Text;
                 reader = command.ExecuteReader();
@@ -179,6 +181,7 @@ namespace Entity.Common
             }
 
             this.FileExtension = extension;
+            this.FileName = fileName;
         }
     
     }

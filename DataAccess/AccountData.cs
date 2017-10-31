@@ -10,6 +10,7 @@ using System.Data;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Entity.Results;
 
 namespace DataAccess
 {
@@ -52,6 +53,24 @@ namespace DataAccess
             }
 
             return invalidAccounts;
+        }
+
+        public CountResult ValidInvalidAccount(string UserCode)
+        {            
+            OracleParameter[] prm = 
+            { 
+                new OracleParameter { ParameterName = "in_user_code", OracleDbType = OracleDbType.Int32, Value = UserCode},
+                new OracleParameter { ParameterName = "out_invalid_count", OracleDbType = OracleDbType.Int32, Direction = System.Data.ParameterDirection.Output},
+                new OracleParameter { ParameterName = "out_valid_count", OracleDbType = OracleDbType.Int32, Direction = System.Data.ParameterDirection.Output}
+            };
+
+            oracleOperation.ExecuteNonQuery("pgk_account_assigment.sp_get_account_count", prm, CommandType.StoredProcedure, Repository.Schema.YBRDS_PROD);
+            oracleOperation.CloseConnection();
+
+            return new CountResult {
+                Valid = Convert.ToInt32(prm[1].Value), 
+                Invalid = Convert.ToInt32(prm[2].Value)
+            };
         }
 
         public string WriteToExcel(List<Account> assignments, string sheetName, string fileName, string savingPath)
@@ -161,5 +180,6 @@ namespace DataAccess
                 writer.WriteEndElement();
             }
         }
+        
     }
 }

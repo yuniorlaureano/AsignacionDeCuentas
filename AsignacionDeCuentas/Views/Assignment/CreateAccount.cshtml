@@ -1,0 +1,69 @@
+﻿@model Entity.Results.AssignmentResult
+
+@{
+    ViewBag.Title = "CreateAccount";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Entity.Results.CountResult countResult = ViewBag.acccountCount;
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Resultado</h3>
+            </div>
+            <div class="panel-body">
+                
+                @if (Model.SpectedRows != Model.InsertedRows)
+                {
+                    <div class="alert alert-danger">
+                        <button class="close" data-dismiss="alert"><i class="pci-cross pci-circle"></i></button>
+                        <p>
+                            <strong>Warning!</strong> Se Insertaron @Model.InsertedRows de @Model.SpectedRows .
+                        </p>
+                        <p>
+                            <a class="btn btn-warning btn-rounded btn-sm" href="@Url.Action("Index","Assignment")"><strong>Opcion!</strong></a> Vaya al siguient link y selecciones la hoja de excel nuevamente.
+                        </p>
+                    </div>    
+                }
+                
+                <div class="panel panel-bordered-info">
+                    <div class="panel-body">    
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="panel media pad-all bg-info">
+                                        <div class="media-left">
+                                            <span class="icon-wra icon-wap-sm bg-ifo">
+                                                <a href="#"><i class="fa fa-eye fa-3x"></i></a>
+                                            </span>
+                                        </div>
+                                        <div class="media-body">
+                                            <p class="text-2x mar-no text-semibold">@countResult.Valid</p>
+                                            <p class="mar-no">Validos</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="panel media pad-all bg-warning">
+                                        <div class="media-left">
+                                            <span class="icon-wra icon-wap-sm bg-ifo">
+                                                <a href="#"><i class="fa fa-eye fa-3x"></i></a>
+                                            </span>
+                                        </div>
+                                        <div class="media-body">
+                                            <p class="text-2x mar-no text-semibold">@countResult.Invalid</p>
+                                            <p class="mar-no">Invalidos</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+                            <button class="btn btn-block btn-primary">Block level button</button>                        
+                         </div>   
+                         
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
