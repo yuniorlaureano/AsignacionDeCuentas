@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+    
+    <link href="@Url.Content("~/Content/css/bootstrap.min.css")" rel="stylesheet">
+
+    <link href="@Url.Content("~/Content/css/nifty.min.css")" rel="stylesheet">
+
+    <link href="@Url.Content("~/Content/css/demo/nifty-demo-icons.min.css")" rel="stylesheet">
+
+    <link href="@Url.Content("~/Content/Syte.css")" rel="stylesheet" />
+
+    <link href="@Url.Content("~/Content/plugins/font-awesome/css/font-awesome.min.css")" rel="stylesheet" />
+</head>
+<body>
+    <div id="container" class="effect aside-float aside-bright mainnav-lg">
+
+        <!--NAVBAR-->
+        <!--===================================================-->
+        <header id="navbar">
+            <div id="navbar-container" class="boxed">
+
+                <!--Brand logo & name-->
+                <!--================================-->
+                <div class="navbar-header">
+                    <a href="index.html" class="navbar-brand">
+                        <img src="@Url.Content("~/Content/img/logo.png")" alt="ASC" class="brand-icon">
+                        <div class="brand-title">
+                            <span class="brand-text">ASC</span>
+                        </div>
+                    </a>
+                </div>
+                <!--================================-->
+                <!--End brand logo & name-->
+                <!--Navbar Dropdown-->
+                <!--================================-->
+                <div class="navbar-content clearfix">
+                    <ul class="nav navbar-top-links pull-left">
+
+                        <!--Navigation toogle button-->
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <li class="tgl-menu-btn">
+                            <a class="mainnav-toggle" href="#">
+                                <i class="demo-pli-view-list"></i>
+                            </a>
+                        </li>
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <!--End Navigation toogle button-->
+                        <!--Notification dropdown-->
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                    </ul>
+                    <ul class="nav navbar-top-links pull-right">
+
+                        <!--Language selector-->
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <li class="dropdown">
+                            <a id="demo-lang-switch" class="lang-selector dropdown-toggle" href="#" data-toggle="dropdown">
+                                <span class="lang-selected">
+                                    Operacion
+                                </span>
+                            </a>
+
+                            <!--Language selector menu-->
+                            <ul class="head-list dropdown-menu">
+                                <li>
+                                    <!--France-->
+                                    <a href="#">
+                                        <img class="lang-flag" src="@Url.Content("~/Content/img/rd.png")" style="width:25%;" alt="Italy">
+                                        <span class="lang-id">PRD</span>
+                                        <span class="lang-name">Dominicana</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <!--France-->
+                                    <a href="#">
+                                        <img class="lang-flag" src="@Url.Content("~/Content/img/pr.png")" style="width:25%;" alt="Italy">
+                                        <span class="lang-id">PR</span>
+                                        <span class="lang-name">Puerto Rico</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <!--France-->
+                                    <a href="#">
+                                        <img class="lang-flag" src="@Url.Content("~/Content/img/pn.png")" style="width:25%;" alt="Italy">
+                                        <span class="lang-id">PR</span>
+                                        <span class="lang-name">Panamá</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--End language selector-->
+                        <li id="dropdown-user" class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle text-right">
+                                <span class="pull-right">
+                                    <i class="demo-pli-male ic-user"></i>
+                                </span>
+                                <div class="username hidden-xs">@Session["UserName"]</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--================================-->
+                <!--End Navbar Dropdown-->
+
+            </div>
+        </header>
+        <!--===================================================-->
+        <!--END NAVBAR-->
+
+        <div class="boxed">
+
+            <!--CONTENT CONTAINER-->
+            <!--===================================================-->
+            <div id="content-container">
+
+                <!--Page Title-->
+                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                <div id="page-title" class="transparent-nav-container">
+                    <div class="transparent-nav-child-brand">
+                        <h1 class="page-header text-overflow">ASC</h1>
+                    </div>
+                </div>
+                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                <!--End page title-->
+                <!--Page content-->
+                <!--===================================================-->
+                <div id="page-content" style="margin:7px;">
+                    @RenderBody()
+                </div>
+                <!--===================================================-->
+                <!--End page content-->
+
+            </div>            
+            <nav id="mainnav-container">
+                <div id="mainnav">
+
+                    <!--Menu-->
+                    <!--================================-->
+                    <div id="mainnav-menu-wrap">
+                        <div class="nano">
+                            <div class="nano-content">                                
+                                <ul id="mainnav-menu" class="list-group">
+
+                                    <!--Category name-->
+                                    <li class="list-header">Opciones</li>
+
+                                    <!--Menu list item-->
+                                    <li class="active-link">
+                                        <a href="#">
+                                            <i class="demo-psi-split-vertical-2"></i>
+                                            <span class="menu-title">
+                                                <strong>Layouts</strong>
+                                            </span>
+                                            <i class="arrow"></i>
+                                        </a>
+
+                                        <!--Submenu-->
+                                        <ul class="collapse">
+                                            <li><a href="layouts-collapsed-navigation.html">Asignar</a></li>
+                                            <li><a href="layouts-offcanvas-navigation.html">Presios Invalidos</a></li>
+                                            <li><a href="layouts-offcanvas-navigation.html">Presios Asignados</a></li>
+                                        </ul>
+                                    </li>
+
+                                   
+
+                                    <li class="list-divider"></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--================================-->
+                    <!--End menu-->
+
+                </div>
+            </nav>
+            <!--===================================================-->
+            <!--END MAIN NAVIGATION-->
+
+        </div>
+
+
+
+        <!-- FOOTER -->
+        <!--===================================================-->
+        <footer id="footer">
+
+            <!-- Visible when footer positions are fixed -->
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <div class="show-fixed pull-right">
+                You have <a href="#" class="text-bold text-main"><span class="label label-danger">3</span> pending action.</a>
+            </div>
+
+
+
+            <!-- Visible when footer positions are static -->
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <div class="hide-fixed pull-right pad-rgt">
+                <strong>Paginas Amarilla</strong>
+            </div>
+
+
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <!-- Remove the class "show-fixed" and "hide-fixed" to make the content always appears. -->
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+            <p class="pad-lft">&#0169; 2017 Caribe Media</p>
+
+
+
+        </footer>
+        <!--===================================================-->
+        <!-- END FOOTER -->
+        <!-- SCROLL PAGE BUTTON -->
+        <!--===================================================-->
+        <button class="scroll-top btn">
+            <i class="pci-chevron chevron-up"></i>
+        </button>
+        <!--===================================================-->
+
+
+
+    </div>
+    
+    <script src="@Url.Content("~/Content/js/jquery-2.2.4.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/js/bootstrap.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/js/nifty.min.js")"></script>
+</body>
+</html>

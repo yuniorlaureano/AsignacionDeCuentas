@@ -1,0 +1,19 @@
+﻿.transparent-nav-container {
+    margin: 8px auto;
+    max-width: 96%;
+    padding: 0 !important;
+    background-color: #337ab7;
+    height: 40%;
+}
+
+.transparent-nav-container .transparent-nav-child-brand {
+   margin: auto !important;
+   background-color: #ecf0f5;
+   padding: 5px;
+   float: left;
+   font-size:17px;
+   color:rgb(0, 0, 77);
+   border-radius: 0% 50%;
+   font-weight: 900;
+   
+   }

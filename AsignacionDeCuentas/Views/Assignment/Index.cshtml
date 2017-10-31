@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel">
+            <div class="panel-body">
+                <div class="pad-btm form-inline">
+                    <div class="row">
+                        <div class="col-sm-6 table-toolbar-left">                            
+                        </div>
+                        <div class="col-sm-6 table-toolbar-right">
+                            <div class="btn-group">
+                                <div class="btn-group">
+                                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                                        <i class="fa fa-file-text-o" aria-hidden="true"> Hojas de excel</i>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Action</a></li>
+                                        <li><a href="#">Action</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-hover table-vcenter">
+                    <thead>
+                        <tr>
+                            <th class="min-width">Subir Archivo</th>
+                            <th>File Name</th>
+                            <th class="text-center">File Extension</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center"><button class="btn btn-primary fa fa-cloud-upload fa-2x"></button></td>
+                            <td>
+                                <span class="text-main text-semibold">Smartphone</span>
+                                <br>
+                                <small class="text-muted">size: 7687</small>
+                            </td>
+                            <td class="text-center"><span class="text-success text-semibold">.xlsx</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
