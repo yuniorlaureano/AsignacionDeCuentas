@@ -39,6 +39,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -251,6 +255,7 @@
     <Content Include="Content\js\jquery-2.2.4.min.js" />
     <Content Include="Content\js\nifty.js" />
     <Content Include="Content\js\nifty.min.js" />
+    <Content Include="Content\loading.css" />
     <Content Include="Content\plugins\animate-css\animate.css" />
     <Content Include="Content\plugins\animate-css\animate.min.css" />
     <Content Include="Content\plugins\animate-css\LICENSE.txt" />
@@ -1513,7 +1518,10 @@
     <Content Include="Content\plugins\toggle-switch\LICENSE" />
     <Content Include="Content\plugins\x-editable\LICENSE-MIT" />
     <Content Include="Content\plugins\x-editable\README.md" />
+    <None Include="Properties\PublishProfiles\ASC_RD.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\AccountAsignment\account.js" />
+    <Content Include="Scripts\AccountAsignment\assigment.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -1550,7 +1558,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Files\Excel\" />
+    <Folder Include="Content\Files\Excel\Assigned\" />
+    <Folder Include="Content\Files\Excel\Invalid\" />
+    <Folder Include="Content\Files\Excel\Valid\" />
     <Folder Include="Content\plugins\flot-charts\examples\gauge\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Acuount\" />

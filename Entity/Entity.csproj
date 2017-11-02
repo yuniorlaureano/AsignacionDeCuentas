@@ -44,6 +44,8 @@
     <Compile Include="Assignment.cs" />
     <Compile Include="Common\ExcelOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Results\AssignedCountResult.cs" />
+    <Compile Include="Results\AssignedResult.cs" />
     <Compile Include="Results\AssignmentResult.cs" />
     <Compile Include="Results\CountResult.cs" />
     <Compile Include="Results\ExcelResult.cs" />

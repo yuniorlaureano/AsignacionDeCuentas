@@ -34,19 +34,25 @@ namespace DataAccess
             {
                new OracleParameter{ ParameterName = "in_sentencia", OracleDbType = OracleDbType.Varchar2, Value = ""},
                new OracleParameter{ ParameterName = "in_user_code", OracleDbType = OracleDbType.Int32, Value = userCode},
-               new OracleParameter{ ParameterName = "out_fected_rows", OracleDbType = OracleDbType.Int16, Direction = System.Data.ParameterDirection.Output},
+               new OracleParameter{ ParameterName = "out_fected_rows", OracleDbType = OracleDbType.Int32, Direction = System.Data.ParameterDirection.Output},
             };
 
-            OracleTransaction transaction = oracleOperation.oracleConnection.BeginTransaction();
+            OracleTransaction transaction = null;
 
             try
             {
+                oracleOperation.OpenConnection(DataAccess.Repository.Schema.YBRDS_PROD);
+                transaction = oracleOperation.oracleConnection.BeginTransaction();
+
                 foreach (string st in statement.Statements)
                 {
                     prm[0].Value = st;
                     oracleOperation.ExecuteNonQuery("pgk_account_assigment.sp_insert_assignments", prm, CommandType.StoredProcedure, DataAccess.Repository.Schema.YBRDS_PROD);
                     count += Convert.ToInt32(prm[2].Value.ToString());
                 }
+
+                transaction.Commit();
+                oracleOperation.CloseConnection();
             }
             catch (OracleException except)
             {
@@ -67,9 +73,7 @@ namespace DataAccess
             }
 
             if (count == statement.RowCount)
-            {
-                transaction.Commit();
-                oracleOperation.CloseConnection();
+            {                
                 return new AssignmentResult
                 {
                     IsError = false,
@@ -79,8 +83,6 @@ namespace DataAccess
                 };
             }
 
-            transaction.Rollback();
-            oracleOperation.CloseConnection();
             return new AssignmentResult 
             {
                 IsError = true,
@@ -98,14 +100,14 @@ namespace DataAccess
             int count = 0;
          
             OleDbDataReader rs = null;
-            string query = excelOp.Query("SELECT SUBSCR_ID, CANV_CODE, CANV_EDITION, EMPLOYEE_ID FROM", sheet);
+            string query = excelOp.Query("SELECT SUBSCR_ID, CANV_CODE, CANV_EDITION, ASIGNACION FROM", sheet);
 
             try
             {
                 rs = excelOp.GetData(query, provider, fileNameWithLocation);
                 while(rs.Read())
                 {
-                    sentencia += string.Format("SELECT '{0}' SUBSCR_ID, '{1}' CANV_CODE, '{2}' CANV_EDITION, '{3}' EMPLOYEE_ID FROM DUAL ", rs["SUBSCR_ID"], rs["CANV_CODE"], rs["CANV_EDITION"], rs["EMPLOYEE_ID"]);
+                    sentencia += string.Format("SELECT {0} AS SUBSCR_ID, '{1}' AS CANV_CODE, {2} AS CANV_EDITION, {3} AS EMPLOYEE_ID FROM DUAL UNION ", rs["SUBSCR_ID"], rs["CANV_CODE"], rs["CANV_EDITION"], rs["ASIGNACION"]);
 
                     count += 1;
 
@@ -118,6 +120,12 @@ namespace DataAccess
 
                     statement.RowCount += 1;
                 }
+
+                if (count > 0 && count < 20)
+                {
+                    statement.Statements.Add(sentencia.Substring(0, sentencia.Length - 7));
+                    sentencia = string.Empty;
+                }
             }
             catch (OleDbException except)
             {                
@@ -125,11 +133,37 @@ namespace DataAccess
             }
             finally
             {
-                rs.Close();
+                if (rs != null)
+                {
+                    rs.Close();
+                }
                 excelOp.CloseConnection();
             }
 
             return statement;
+        }
+
+        public void DeleteAssignment(string userCode)
+        {
+            OracleParameter[] prm = 
+            {
+               new OracleParameter{ ParameterName = "user_code", OracleDbType = OracleDbType.Varchar2, Value = ""}
+            };
+
+            try
+            {
+                oracleOperation.OpenConnection(DataAccess.Repository.Schema.YBRDS_PROD);
+                oracleOperation.ExecuteNonQuery("pgk_account_assigment.delete_assiment_by_usr", prm, CommandType.StoredProcedure, DataAccess.Repository.Schema.YBRDS_PROD);
+                oracleOperation.CloseConnection();
+            }
+            catch (OracleException except)
+            {
+                throw except;
+            }
+            finally
+            {
+                oracleOperation.CloseConnection();
+            }
         }
     }
 }

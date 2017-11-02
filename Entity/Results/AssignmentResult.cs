@@ -9,6 +9,7 @@ namespace Entity.Results
     public class AssignmentResult
     {
         public int Id { get; set; }
+        public bool IsAssined { get; set; }
         public string Message { get; set; }
         public string StackTrace { get; set; }
         public bool IsError { get; set; }

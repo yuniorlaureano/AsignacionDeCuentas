@@ -21,5 +21,10 @@ namespace BusinessLogic
         {
             return new AssigmentData().GenerateAssigncSentences(fileNameWithLocation, provider, sheet);
         }
+
+        public void DeleteAssignment(string userCode)
+        {
+            new AssigmentData().DeleteAssignment(userCode);
+        }
     }
 }

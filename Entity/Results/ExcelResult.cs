@@ -14,5 +14,8 @@ namespace Entity.Results
         public string StackTrace { get; set; }
         public bool IsError { get; set; }
         public bool IsSucess { get; set; }
+        public string FileName { get; set; }
+        public string FileExtension { get; set; }
+        public int FileSize { get; set; }
     }
 }

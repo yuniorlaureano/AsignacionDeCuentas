@@ -160,7 +160,7 @@ namespace Entity.Common
         /// <returns>string</returns>
         public string Query(string query, string sheet)
         {
-            return string.Format("{0} {1}", query, sheet);
+            return string.Format("{0} [{1}] WHERE SUBSCR_ID IS NOT NULL AND  CANV_CODE IS NOT NULL AND CANV_EDITION IS NOT NULL AND ASIGNACION", query, sheet);
         }
     
         /// <summary>
@@ -184,5 +184,35 @@ namespace Entity.Common
             this.FileName = fileName;
         }
     
+        public string ValidateColums(string columsToValidate, string sheet, string fileLocation, Provider provider, int columnCount)
+        {
+            int count = 0;
+            string caption = string.Empty;
+            string invalidColums = string.Empty;
+
+            DataTable tableColumns = new DataTable();
+            this.OpenConnection(provider, fileLocation);
+            OleDbCommand comando = new OleDbCommand("select top 1 * from ["+sheet+"]", this.OldbCn);
+            OleDbDataAdapter adapter = new OleDbDataAdapter(comando);
+            adapter.Fill(tableColumns);
+            this.CloseConnection();
+
+           foreach(DataColumn cln in tableColumns.Columns)
+           {
+               caption = cln.Caption.ToLower();
+               if (!columsToValidate.Contains(caption))
+               {
+                   invalidColums = invalidColums + caption + ",";
+               }
+
+               count += 1;
+               if (count == columnCount)
+               {
+                   break;
+               }
+           }
+
+           return invalidColums;
+        }
     }
 }

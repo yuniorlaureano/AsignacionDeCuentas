@@ -57,6 +57,7 @@ namespace AsignacionDeCuentas.Controllers
             HttpPostedFileBase file = Request.Files[0];
             ExcelOperation excelOp = new ExcelOperation();
             ExcelResult excelResult = null;
+            string isColumsValid = string.Empty;
 
             if (file.ContentLength == 0)
             {
@@ -66,16 +67,16 @@ namespace AsignacionDeCuentas.Controllers
 
             try
             {
-                excelOp.SetProvider(file.FileName);
+                excelOp.SetProvider(file.FileName);               
             }
             catch (ArgumentException except)
             {
-                excelResult = new ExcelResult { IsError = true, Message = except.Message, StackTrace = except.StackTrace };
+                excelResult = new ExcelResult { IsError = true, Message = except.Message };
                 return View("Index", excelResult);
             }
             catch (OleDbException except)
             {
-                excelResult = new ExcelResult { IsError = true, Message = except.Message, StackTrace = except.StackTrace };
+                excelResult = new ExcelResult { IsError = true, Message = except.Message };
                 return View("Index", excelResult);
             }
 
@@ -94,23 +95,40 @@ namespace AsignacionDeCuentas.Controllers
                 {
                     IsError = false,
                     IsSucess = true,
-                    Message = "Elija la hoja de excel.",
-                    Sheets = excelOp.GetSheetNames(excelOp.Provider, location)
+                    Message = "Archivo de excel válido, puede proceder con la asignación.",
+                    Sheets = excelOp.GetSheetNames(excelOp.Provider, location),
+                    FileName = file.FileName.Split('.')[0],
+                    FileExtension = file.FileName.Split('.')[1],
+                    FileSize = file.ContentLength
                 };
+
+                
+                isColumsValid = excelOp.ValidateColums(
+                    "subscr_id,canv_code,canv_edition,asignacion",
+                    excelResult.Sheets[0], location, excelOp.Provider, 4
+                );
+
+                if (isColumsValid.Length > 0)
+                {
+                    excelResult.IsError = true;
+                    excelResult.IsSucess = false;
+                    excelResult.Message = "Columnas [" + isColumsValid + "] son inválidas. El archivo debe contener las columnas: \"[SUBSCR_ID, CANV_CODE, CANV_EDITION, ASIGNACION]\"; en la primera hoja.";
+                }
+                        
             }
             catch (OleDbException except)
             {
-                excelResult = new ExcelResult { IsError = true, Message = except.Message, StackTrace = except.StackTrace };
+                excelResult = new ExcelResult { IsError = true, Message = except.Message};
                 return View("Index", excelResult);
             }
             catch(IOException except)
             {
-                excelResult = new ExcelResult { IsError = true, Message = except.Message, StackTrace = except.StackTrace };
+                excelResult = new ExcelResult { IsError = true, Message = except.Message};
                 return View("Index", excelResult);
             }
             catch (ArgumentException except)
             {
-                excelResult = new ExcelResult { IsError = true, Message = except.Message, StackTrace = except.StackTrace };
+                excelResult = new ExcelResult { IsError = true, Message = except.Message};
                 return View("Index", excelResult);
             }
             finally

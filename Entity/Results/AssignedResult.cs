@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entity
+namespace Entity.Results
 {
-    public class Account
+    public class AssignedResult
     {
         public string Id { get; set; }
         public string Status { get; set; }
@@ -17,5 +17,6 @@ namespace Entity
         public string SubscrId { get; set; }
         public string UserAssigned { get; set; }
         public string UserToAssign { get; set; }
+        public string IsAssigned { get; set; }
     }
 }

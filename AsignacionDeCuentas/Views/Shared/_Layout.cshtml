@@ -7,7 +7,7 @@
     <title>@ViewBag.Title</title>
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
-    
+
     <link href="@Url.Content("~/Content/css/bootstrap.min.css")" rel="stylesheet">
 
     <link href="@Url.Content("~/Content/css/nifty.min.css")" rel="stylesheet">
@@ -17,8 +17,16 @@
     <link href="@Url.Content("~/Content/Syte.css")" rel="stylesheet" />
 
     <link href="@Url.Content("~/Content/plugins/font-awesome/css/font-awesome.min.css")" rel="stylesheet" />
+
+    <link href="@Url.Content("~/Content/loading.css")" rel="stylesheet" />
+
 </head>
 <body>
+    <div class="loader-wrapper" style="display:none">
+        <div class="loader"></div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+    </div>
     <div id="container" class="effect aside-float aside-bright mainnav-lg">
 
         <!--NAVBAR-->
@@ -29,7 +37,7 @@
                 <!--Brand logo & name-->
                 <!--================================-->
                 <div class="navbar-header">
-                    <a href="index.html" class="navbar-brand">
+                    <a href="@Url.Action("Index","Assignment")" class="navbar-brand">
                         <img src="@Url.Content("~/Content/img/logo.png")" alt="ASC" class="brand-icon">
                         <div class="brand-title">
                             <span class="brand-text">ASC</span>
@@ -136,7 +144,7 @@
                 <!--===================================================-->
                 <!--End page content-->
 
-            </div>            
+            </div>
             <nav id="mainnav-container">
                 <div id="mainnav">
 
@@ -144,33 +152,66 @@
                     <!--================================-->
                     <div id="mainnav-menu-wrap">
                         <div class="nano">
-                            <div class="nano-content">                                
+                            <div class="nano-content">
                                 <ul id="mainnav-menu" class="list-group">
 
                                     <!--Category name-->
                                     <li class="list-header">Opciones</li>
-
-                                    <!--Menu list item-->
+                                    
                                     <li class="active-link">
-                                        <a href="#">
-                                            <i class="demo-psi-split-vertical-2"></i>
+                                        <a href="@Url.Action("Index", "Assignment")">
+                                            <i class="fa fa-thumb-tack"></i>
                                             <span class="menu-title">
-                                                <strong>Layouts</strong>
+                                                <strong>Asignar</strong>
                                             </span>
-                                            <i class="arrow"></i>
                                         </a>
-
-                                        <!--Submenu-->
-                                        <ul class="collapse">
-                                            <li><a href="layouts-collapsed-navigation.html">Asignar</a></li>
-                                            <li><a href="layouts-offcanvas-navigation.html">Presios Invalidos</a></li>
-                                            <li><a href="layouts-offcanvas-navigation.html">Presios Asignados</a></li>
-                                        </ul>
                                     </li>
 
-                                   
+                                    @if (File.Exists(Server.MapPath("~/Content/Files/Excel/Invalid/Invalid_" + Session["UserCode"] + ".xlsx")))
+                                    {
+                                        <li class="active-link">
+                                            <a href="@Url.Action("GetInvalidFromExcel", "Account")">
+                                                <i class="fa fa-times"></i>
+                                                <span class="menu-title">
+                                                    <strong>Cuentas Inválidas</strong>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="active-link">
+                                            <a href="#">
+                                                <i class="fa fa-times"></i>
+                                                <span class="menu-title">
+                                                    <strong>Cuentas Inválidas</strong>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
 
-                                    <li class="list-divider"></li>
+                                    @if (File.Exists(Server.MapPath("~/Content/Files/Excel/Assigned/Assigned_" + Session["UserCode"] + ".xlsx")))
+                                    {
+                                        <li class="active-link">
+                                            <a href="@Url.Action("GetAssignedExcel", "Account")">
+                                                <i class="fa fa-check"></i>
+                                                <span class="menu-title">
+                                                    <strong>Cuentas Asignadas</strong>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-check"></i>
+                                                <span class="menu-title">
+                                                    <strong>Cuentas Asignadas</strong>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
 
                                 </ul>
                             </div>
@@ -229,7 +270,7 @@
 
 
     </div>
-    
+
     <script src="@Url.Content("~/Content/js/jquery-2.2.4.min.js")"></script>
 
     <script src="@Url.Content("~/Content/js/bootstrap.min.js")"></script>

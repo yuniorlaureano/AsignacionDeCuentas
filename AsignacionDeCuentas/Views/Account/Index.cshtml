@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="panel">
+        <div class="panel" id="panel-result-account">
             <div class="panel-heading">
                 <h3 class="panel-title">Resultado</h3>
             </div>
@@ -19,10 +19,10 @@
                     <div class="alert alert-danger">
                         <button class="close" data-dismiss="alert"><i class="pci-cross pci-circle"></i></button>
                         <p>
-                            <strong>Warning!</strong> Se Insertaron @Model.InsertedRows de @Model.SpectedRows .
+                            <strong>Warning!</strong> Se Insertaron @Model.InsertedRows de @(Model.SpectedRows).
                         </p>
                         <p>
-                            <a class="btn btn-warning btn-rounded btn-sm" href="@Url.Action("Index","Assignment")"><strong>Opcion!</strong></a> Vaya al siguient link y selecciones la hoja de excel nuevamente.
+                            <a class="btn btn-warning btn-rounded btn-sm" href="@Url.Action("Index","Assignment")"><strong>Opcion!</strong></a> Vaya al siguiente link e inténtelo nuevamente.
                         </p>
                     </div>
                 }
@@ -30,34 +30,48 @@
                 <div class="panel panel-bordered-info">
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-sm-6">
-                                <div class="panel media pad-all bg-info">
-                                    <div class="media-left">
-                                        <span class="icon-wra icon-wap-sm bg-ifo">
-                                            <a href="#"><i class="fa fa-eye fa-3x"></i></a>
-                                        </span>
-                                    </div>
-                                    <div class="media-body">
-                                        <p class="text-2x mar-no text-semibold">@countResult.Valid</p>
-                                        <p class="mar-no">Validos</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="panel media pad-all bg-warning">
-                                    <div class="media-left">
-                                        <span class="icon-wra icon-wap-sm bg-ifo">
-                                            <a href="#"><i class="fa fa-eye fa-3x"></i></a>
-                                        </span>
-                                    </div>
-                                    <div class="media-body">
-                                        <p class="text-2x mar-no text-semibold">@countResult.Invalid</p>
-                                        <p class="mar-no">Invalidos</p>
+                            
+                            @if (countResult != null)
+                            {
+                                <div class="col-sm-6">
+                                    <div class="panel media pad-all bg-info">
+                                        <div class="media-left">
+                                            <span class="icon-wra icon-wap-sm bg-ifo">
+                                                <i class="fa fa-check fa-3x"></i>
+                                            </span>
+                                        </div>
+                                        <div class="media-body">
+                                            <p class="text-2x mar-no text-semibold">@countResult.Valid</p>
+                                            <p class="mar-no">Válidos</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="col-sm-6">
+                                    <div class="panel media pad-all bg-warning">
+                                        <div class="media-left">
+                                            <span class="icon-wra icon-wap-sm bg-ifo">
+                                                @if(countResult.Invalid > 0)
+                                                {
+                                                    <a href="@(countResult.Invalid > 0 ? Url.Action("GetInvalidFromExcel", "Account") : "")"><i class="fa fa-file-excel-o fa-3x"></i></a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="#"><i class="fa fa-check fa-3x"></i></a>
+                                                }
+                                            </span>
+                                        </div>
+                                        <div class="media-body">
+                                            <p class="text-2x mar-no text-semibold">@countResult.Invalid</p>
+                                            <p class="mar-no">Inválidos</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }                            
                         </div>
-                        <button class="btn btn-block btn-primary">Block level button</button>
+                        @using (Html.BeginForm("Assign","Account", FormMethod.Post))
+                        {
+                            <button class="btn btn-block btn-primary" id="command-button-assignar">Asignar</button>
+                        }
                     </div>
 
                 </div>
@@ -66,4 +80,17 @@
         </div>
     </div>
 </div>
-</div>
+
+@if (Model != null && Model.IsError)
+{
+    <div id="err-container" data-error="@Model.Message"></div>
+}
+
+@if (Model != null && Model.IsAssined)
+{
+    <div id="msg-container" data-message="@Model.Message"></div>
+}
+
+@section scripts{   
+<script src="~/Scripts/AccountAsignment/account.js"></script>
+}
