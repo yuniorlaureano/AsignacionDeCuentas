@@ -84,6 +84,12 @@ namespace AsignacionDeCuentas.Controllers
             return File("~/Content/Files/Excel/Assigned/Assigned_" + Session["UserCode"].ToString() + ".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
 
+        [HttpGet]
+        public FileResult Documentation()
+        {
+            return File("~/Content/Files/Docs/Assignation de cuentas.pdf", "application/pdf");
+        }
+
         [HttpPost]
         public ActionResult Assign()
         {

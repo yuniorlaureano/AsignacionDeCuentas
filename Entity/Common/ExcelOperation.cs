@@ -177,7 +177,7 @@ namespace Entity.Common
                     break;
                 case ".xlsx": this.Provider = Provider.XLSX;
                     break;
-                default: throw new ArgumentException("La exgension ther archivo: ["+extension+"], no es valida.");
+                default: throw new ArgumentException("La estension del archivo: ["+extension+"], no es valida.");
             }
 
             this.FileExtension = extension;

@@ -1518,6 +1518,7 @@
     <Content Include="Content\plugins\toggle-switch\LICENSE" />
     <Content Include="Content\plugins\x-editable\LICENSE-MIT" />
     <Content Include="Content\plugins\x-editable\README.md" />
+    <None Include="Properties\PublishProfiles\ASC_FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ASC_RD.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\AccountAsignment\account.js" />

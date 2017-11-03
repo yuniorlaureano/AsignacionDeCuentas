@@ -37,7 +37,7 @@ function showErrorMessage() {
     if (errorc.length != 0) {
 
         var html = "<p>" + errorc.attr("data-error") + "</p>";
-        getTimerDialogMsg("danger", html, "panel-upload-file", 7000);
+        getTimerDialogMsg("danger", html, "panel-upload-file", 50000);
     }
 
 }
@@ -50,7 +50,7 @@ function showMessage() {
 
         var html = "<p>" + messagec.attr("data-message") + "</p>";
 
-        getTimerDialogMsg("info", html, "panel-upload-file", 7000);
+        getTimerDialogMsg("info", html, "panel-upload-file", 50000);
     }
 
 }
@@ -69,7 +69,7 @@ function sendSheet() {
         }
         else
         {
-            getTimerDialogMsg("info", "Por algún motivo la hoja de excel no fue selecionada. Intentelo nuevamente.", "panel-upload-file", 7000);
+            getTimerDialogMsg("info", "La información no pudo ser cargada. Favor intentar nuevamente.", "panel-upload-file", 50000);
         }
 
 

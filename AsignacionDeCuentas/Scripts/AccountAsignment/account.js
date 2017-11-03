@@ -16,7 +16,7 @@ function showErrorMessage() {
 
         var html = "<p>" + errorc.attr("data-error") + "</p>";
 
-        getTimerDialogMsg("danger", html, "panel-result-account", 7000);
+        getTimerDialogMsg("danger", html, "panel-result-account", 50000);
     }
 
 }
@@ -29,7 +29,7 @@ function showMessage() {
 
         var html = "<p>" + messagec.attr("data-message") + "</p>";
 
-        getTimerDialogMsg("info", html, "panel-result-account", 7000);
+        getTimerDialogMsg("info", html, "panel-result-account", 50000);
     }
 
 }

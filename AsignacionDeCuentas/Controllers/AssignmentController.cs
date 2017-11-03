@@ -17,36 +17,10 @@ namespace AsignacionDeCuentas.Controllers
         public ActionResult Index()
         {
             ExcelResult excelResult = new ExcelResult();
-            string userCode = Session["UserCode"].ToString();
-
-            string location = Server.MapPath("~/Content/Files/Excel/Assigment_" + userCode + ".xlsx");
-            Provider provider = Provider.XLSX;
-
-            try
-            {
-                if (!System.IO.File.Exists(location))
-                {
-                    location = Server.MapPath("~/Content/Files/Excel/Assigment_" + userCode + ".xls");
-                    provider = Provider.XLS;
-                }
-
-                if (System.IO.File.Exists(location))
-                {
-                    excelResult.IsError = false;
-                    excelResult.IsSucess = false;
-                    excelResult.Sheets = new ExcelOperation().GetSheetNames(provider, location);
-                }                
-            }
-            catch (ArgumentException except)
-            {
-                excelResult = new ExcelResult { IsError = true, Message = except.Message, StackTrace = except.StackTrace };
-                return View(excelResult);
-            }
-            catch (OleDbException except)
-            {
-                excelResult = new ExcelResult { IsError = true, Message = except.Message, StackTrace = except.StackTrace };
-                return View(excelResult);
-            }
+            excelResult.IsError = false;
+            excelResult.IsSucess = false;
+            excelResult.FileExtension = "xlsx";
+            excelResult.FileName = "Suba un archivo de excel válido";
 
             return View(excelResult);
         }
