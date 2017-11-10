@@ -20,6 +20,10 @@
 
     <link href="@Url.Content("~/Content/loading.css")" rel="stylesheet" />
 
+    <link href="@Url.Content("~/Content/plugins/datatables/media/css/dataTables.bootstrap.css")" rel="stylesheet" />
+
+    <link href="@Url.Content("~/Content/plugins/datatables/extensions/Responsive/css/dataTables.responsive.css")" rel="stylesheet" />
+
 </head>
 <body>
     <div class="loader-wrapper" style="display:none">
@@ -213,6 +217,14 @@
                                         </li>
                                     }
                                     <li class="active-link">
+                                        <a href="@Url.Action("Index", "Supervisor")">
+                                            <i class="fa fa-users"></i>
+                                            <span class="menu-title">
+                                                <strong>Supervisores</strong>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="active-link">
                                         <a href="@Url.Action("Documentation", "Account")" target="_blank">
                                             <i class="fa fa-file-text"></i>
                                             <span class="menu-title">
@@ -286,6 +298,10 @@
 
     <script src="@Url.Content("~/Scripts/Utils.js")"></script>
 
+    <script src="@Url.Content("~/Content/plugins/datatables/media/js/jquery.dataTables.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/plugins/datatables/media/js/dataTables.bootstrap.js")"></script>
+    
     @RenderSection("scripts", false)
 </body>
 </html>

@@ -50,6 +50,7 @@
     <Compile Include="Results\CountResult.cs" />
     <Compile Include="Results\ExcelResult.cs" />
     <Compile Include="Results\StatementResult.cs" />
+    <Compile Include="Supervisor.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

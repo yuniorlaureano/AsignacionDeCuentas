@@ -1537,6 +1537,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AssignmentController.cs" />
+    <Compile Include="Controllers\SupervisorController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1550,6 +1551,7 @@
     <Content Include="Views\Assignment\Index.cshtml" />
     <Content Include="Views\Assignment\CreateAccount.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Supervisor\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1561,6 +1563,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\Files\Excel\Assigned\" />
     <Folder Include="Content\Files\Excel\Invalid\" />
+    <Folder Include="Content\Files\Excel\Supervisor\" />
     <Folder Include="Content\Files\Excel\Valid\" />
     <Folder Include="Content\plugins\flot-charts\examples\gauge\" />
     <Folder Include="Models\" />

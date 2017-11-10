@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Entity.Supervisor>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Supervisores</h3>
+            </div>
+            <div id="demo-custom-toolbar" class="table-toolbar-left">
+                <a href="@Url.Action("GetSupervisorFile", "Supervisor")" class="btn btn-default"><i class="fa fa-file-excel-o fa-2x text-primary"></i></a>
+            </div>
+            <div class="panel-body">            
+                    <table id="data-table-supervisor" class="table table-striped table-bordered" cellspacing="0" width="100%">                        
+                        <thead>
+                            <tr>
+                                <th>Supervidor Id</th>
+                                <th>Supervidor</th>
+                                <th>Tarjeta Ejecutivo</th>
+                                <th>Ejecutivo</th>
+                                <th>Unidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var supervisor in Model)
+                            {
+                                <tr>
+                                    <td>@supervisor.Id</td>
+                                    <td>@supervisor.Name</td>
+                                    <td>@supervisor.EjecutiveCard</td>
+                                    <td>@supervisor.EjecutiveName</td>
+                                    <td>@supervisor.Unit</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+            </div>
+            <!--===================================================-->
+            <!--End Data Table-->
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $.fn.DataTable.ext.pager.numbers_length = 50;
+
+        var rowDeletion = $('#data-table-supervisor').DataTable({
+            "responsive": true,
+            "language": {
+                "paginate": {
+                    "previous": '<i class="demo-psi-arrow-left"></i>',
+                    "next": '<i class="demo-psi-arrow-right"></i>'
+                }
+            },
+            "pageLength": 25,
+            "dom": '<"toolbar">frtip'
+        });
+
+        $('#demo-custom-toolbar').appendTo($("div.toolbar"));
+    </script>
+}
