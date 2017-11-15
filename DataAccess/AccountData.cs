@@ -11,18 +11,27 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Entity.Results;
+using System.Data.OleDb;
+using Entity.Common;
 
 namespace DataAccess
 {
     public class AccountData
     {
         OracleBasicOperation oracleOperation;
+        ExcelOperation excelOp;
 
         public AccountData()
         {
             oracleOperation = new OracleBasicOperation();
+            excelOp = new ExcelOperation();
         }
 
+        /// <summary>
+        /// Obtiene la cuentas invalidas
+        /// </summary>
+        /// <param name="userCode">usuario loguado en el sistema</param>
+        /// <returns>List<Account></returns>
         public List<Account> GetInvalid(string userCode)
         {
             List<Account> invalidAccounts = new List<Account>();
@@ -71,6 +80,11 @@ namespace DataAccess
             return invalidAccounts;
         }
         
+        /// <summary>
+        /// Asigna las cuentas
+        /// </summary>
+        /// <param name="userCode">Usuario logueado en el sistema</param>
+        /// <returns>AssignedCountResult</returns>
         public AssignedCountResult Assign(string userCode)
         {
             OracleParameter[] prm = 
@@ -99,6 +113,11 @@ namespace DataAccess
             };
         }
 
+        /// <summary>
+        /// Obtiene las cuentas que se supone se asignaron
+        /// </summary>
+        /// <param name="userCode">Usuario loguado en el sistema</param>
+        /// <returns>List<AssignedResult></returns>
         public List<AssignedResult> GetSpectedAssigment(string userCode)
         {
             List<AssignedResult> assigned = new List<AssignedResult>();
@@ -143,6 +162,11 @@ namespace DataAccess
             return assigned;
         }
 
+        /// <summary>
+        /// Obtiene las cantidad de cuentas validas e invalidas
+        /// </summary>
+        /// <param name="UserCode">Usuario logueado en el sismtema</param>
+        /// <returns>CountResult</returns>
         public CountResult ValidInvalidAccount(string UserCode)
         {            
             OracleParameter[] prm = 
@@ -171,6 +195,56 @@ namespace DataAccess
             }
 
             return countAcccount;
+        }
+
+        /// <summary>
+        /// Obtiene las cuentas invalidas, desde un archivo de excel.
+        /// </summary>
+        /// <param name="fileNameWithLocation">Localizacion del archivo de excel</param>
+        /// <param name="provider">Si es xls, o xlsx</param>
+        /// <param name="sheet">la hoja de excel</param>
+        /// <returns>List<Account></returns>
+        public List<Account> GetInvalalidAccountFromExcel(string fileNameWithLocation, Provider provider, string sheet)
+        {
+            List<Account> invalidAccounts = new List<Account>();
+
+            OleDbDataReader resultset = null;
+            string query = excelOp.Query("SELECT Subscr Id, Canv Code, Canv Edition, Charge In, Charge Out, Status, Empleado Asignado, Empleado a Asignar FROM", sheet);
+
+            try
+            {
+                resultset = excelOp.GetData(query, provider, fileNameWithLocation);
+
+                while (resultset.Read())
+                {
+                    invalidAccounts.Add(
+                        new Account
+                        {
+                            CanvCode = resultset["CANV_CODE"].ToString(),
+                            ChargeIn = resultset["CHARGE_IN"].ToString(),
+                            ChargeOut = resultset["CHARGE_OUT"].ToString(),
+                            Status = resultset["ACCOUNT_STATUS"].ToString(),
+                            SubscrId = resultset["SUBSCR_ID"].ToString(),
+                            CanvEdition = resultset["canv_edition"].ToString(),
+                            UserAssigned = resultset["assigned_employee"].ToString(),
+                            UserToAssign = resultset["to_assign_employee"].ToString()
+                        });
+                }
+            }
+            catch (OleDbException except)
+            {
+                throw except;
+            }
+            finally
+            {
+                if (resultset != null)
+                {
+                    resultset.Close();
+                }
+                excelOp.CloseConnection();
+            }
+
+            return invalidAccounts;
         }
 
         public string WriteToExcel(List<Account> assignments, string sheetName, string fileName, string savingPath)
@@ -220,9 +294,7 @@ namespace DataAccess
         {
             List<OpenXmlAttribute> row = new List<OpenXmlAttribute> { new OpenXmlAttribute("r", null, "1") };
             writer.WriteStartElement(new Row(), row);
-
             List<OpenXmlAttribute> cell = new List<OpenXmlAttribute> { new OpenXmlAttribute("t", null, "inlineStr") };
-
             foreach (string h in header)
             {
                 writer.WriteStartElement(new Cell(), cell);
@@ -236,35 +308,33 @@ namespace DataAccess
         public void WriteExcelValues(List<Account> assignments, OpenXmlWriter writer)
         {
             int currentRow = 0;
-
             List<OpenXmlAttribute> row;
             List<OpenXmlAttribute> cell = new List<OpenXmlAttribute> { new OpenXmlAttribute("t", null, "inlineStr") };
-
+            List<OpenXmlAttribute> intCell = new List<OpenXmlAttribute> { new OpenXmlAttribute("t", null, "n") };
             for (int i = 1; i <= assignments.Count; i++)
             {
                 currentRow = i - 1;
-
                 row = new List<OpenXmlAttribute> { new OpenXmlAttribute("r", null, (i + 1).ToString()) };
                 writer.WriteStartElement(new Row(), row);
 
-                writer.WriteStartElement(new Cell(), cell);
-                writer.WriteElement(new InlineString(new Text(assignments[currentRow].SubscrId.ToString())));
+                writer.WriteStartElement(new Cell(), intCell);
+                writer.WriteElement(new CellValue(assignments[currentRow].SubscrId));
                 writer.WriteEndElement();
 
                 writer.WriteStartElement(new Cell(), cell);
                 writer.WriteElement(new InlineString(new Text(assignments[currentRow].CanvCode)));
                 writer.WriteEndElement();
 
-                writer.WriteStartElement(new Cell(), cell);
-                writer.WriteElement(new InlineString(new Text(assignments[currentRow].CanvEdition.ToString())));
+                writer.WriteStartElement(new Cell(), intCell);
+                writer.WriteElement(new CellValue(assignments[currentRow].CanvEdition));
                 writer.WriteEndElement();
 
-                writer.WriteStartElement(new Cell(), cell);
-                writer.WriteElement(new InlineString(new Text(assignments[currentRow].ChargeIn.ToString())));
+                writer.WriteStartElement(new Cell(), intCell);
+                writer.WriteElement(new CellValue(assignments[currentRow].ChargeIn));
                 writer.WriteEndElement();
 
-                writer.WriteStartElement(new Cell(), cell);
-                writer.WriteElement(new InlineString(new Text(assignments[currentRow].ChargeOut.ToString())));
+                writer.WriteStartElement(new Cell(), intCell);
+                writer.WriteElement(new CellValue(assignments[currentRow].ChargeOut));
                 writer.WriteEndElement();
 
                 writer.WriteStartElement(new Cell(), cell);
@@ -329,35 +399,33 @@ namespace DataAccess
         public void WriteAssignedExcelValues(List<AssignedResult> assignments, OpenXmlWriter writer)
         {
             int currentRow = 0;
-
             List<OpenXmlAttribute> row = new List<OpenXmlAttribute>();
             List<OpenXmlAttribute> cell = new List<OpenXmlAttribute> { new OpenXmlAttribute("t", null, "inlineStr") };
-
+            List<OpenXmlAttribute> intCell = new List<OpenXmlAttribute> { new OpenXmlAttribute("t", null, "n") };
             for (int i = 1; i <= assignments.Count; i++)
             {
                 currentRow = i - 1;
-
-                row = new List<OpenXmlAttribute>{ new OpenXmlAttribute("r", null, (i + 1).ToString())};
+                row = new List<OpenXmlAttribute> { new OpenXmlAttribute("r", null, (i + 1).ToString()) };
                 writer.WriteStartElement(new Row(), row);
 
-                writer.WriteStartElement(new Cell(), cell);
-                writer.WriteElement(new InlineString(new Text(assignments[currentRow].SubscrId.ToString())));
+                writer.WriteStartElement(new Cell(), intCell);
+                writer.WriteElement(new CellValue(assignments[currentRow].SubscrId));
                 writer.WriteEndElement();
 
                 writer.WriteStartElement(new Cell(), cell);
                 writer.WriteElement(new InlineString(new Text(assignments[currentRow].CanvCode)));
                 writer.WriteEndElement();
 
-                writer.WriteStartElement(new Cell(), cell);
-                writer.WriteElement(new InlineString(new Text(assignments[currentRow].CanvEdition.ToString())));
+                writer.WriteStartElement(new Cell(), intCell);
+                writer.WriteElement(new CellValue(assignments[currentRow].CanvEdition));
                 writer.WriteEndElement();
 
-                writer.WriteStartElement(new Cell(), cell);
-                writer.WriteElement(new InlineString(new Text(assignments[currentRow].ChargeIn.ToString())));
+                writer.WriteStartElement(new Cell(), intCell);
+                writer.WriteElement(new CellValue(assignments[currentRow].ChargeIn));
                 writer.WriteEndElement();
 
-                writer.WriteStartElement(new Cell(), cell);
-                writer.WriteElement(new InlineString(new Text(assignments[currentRow].ChargeOut.ToString())));
+                writer.WriteStartElement(new Cell(), intCell);
+                writer.WriteElement(new CellValue(assignments[currentRow].ChargeOut));
                 writer.WriteEndElement();
 
                 writer.WriteStartElement(new Cell(), cell);

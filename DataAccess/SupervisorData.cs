@@ -135,6 +135,7 @@ namespace DataAccess
 
             List<OpenXmlAttribute> row;
             List<OpenXmlAttribute> cell = new List<OpenXmlAttribute> { new OpenXmlAttribute("t", null, "inlineStr") };
+            List<OpenXmlAttribute> intcell = new List<OpenXmlAttribute> { new OpenXmlAttribute("t", null, "n") };
 
             for (int i = 1; i <= supervisors.Count; i++)
             {
@@ -143,24 +144,24 @@ namespace DataAccess
                 row = new List<OpenXmlAttribute> { new OpenXmlAttribute("r", null, (i + 1).ToString()) };
                 writer.WriteStartElement(new Row(), row);
 
-                writer.WriteStartElement(new Cell(), cell);
-                writer.WriteElement(new InlineString(new Text(supervisors[currentRow].Id.ToString())));
+                writer.WriteStartElement(new Cell(), intcell);
+                writer.WriteElement(new CellValue(supervisors[currentRow].Id));
                 writer.WriteEndElement();
 
                 writer.WriteStartElement(new Cell(), cell);
                 writer.WriteElement(new InlineString(new Text(supervisors[currentRow].Name)));
                 writer.WriteEndElement();
 
-                writer.WriteStartElement(new Cell(), cell);
-                writer.WriteElement(new InlineString(new Text(supervisors[currentRow].EjecutiveCard.ToString())));
+                writer.WriteStartElement(new Cell(), intcell);
+                writer.WriteElement(new CellValue(supervisors[currentRow].EjecutiveCard.ToString()));
                 writer.WriteEndElement();
 
                 writer.WriteStartElement(new Cell(), cell);
                 writer.WriteElement(new InlineString(new Text(supervisors[currentRow].EjecutiveName)));
                 writer.WriteEndElement();
-                
-                writer.WriteStartElement(new Cell(), cell);
-                writer.WriteElement(new InlineString(new Text(supervisors[currentRow].Unit.ToString())));
+
+                writer.WriteStartElement(new Cell(), intcell);
+                writer.WriteElement(new CellValue(supervisors[currentRow].Unit.ToString()));
                 writer.WriteEndElement();
 
                 writer.WriteEndElement();

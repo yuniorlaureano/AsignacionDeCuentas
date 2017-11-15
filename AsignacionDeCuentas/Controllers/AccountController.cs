@@ -19,6 +19,11 @@ namespace AsignacionDeCuentas.Controllers
             return View(new AssignmentResult());
         }
 
+        /// <summary>
+        /// Realiza la insercion de la data a asignar
+        /// </summary>
+        /// <param name="sheet"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Index(string sheet)
         {
@@ -72,24 +77,40 @@ namespace AsignacionDeCuentas.Controllers
             return View(asscResult);        
         }
 
+        /// <summary>
+        /// Obtiene un excel con la cuentas invalidas
+        /// </summary>
+        /// <returns>FileResult</returns>
         [HttpGet]
         public FileResult GetInvalidFromExcel()
         {
             return File("~/Content/Files/Excel/Invalid/Invalid_" + Session["UserCode"].ToString() + ".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
         
+        /// <summary>
+        /// Obtiene el archivo de excel con la cuentas asignadas
+        /// </summary>
+        /// <returns>FileResult</returns>
         [HttpGet]
         public FileResult GetAssignedExcel()
         {
             return File("~/Content/Files/Excel/Assigned/Assigned_" + Session["UserCode"].ToString() + ".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
 
+        /// <summary>
+        /// Despliega un pdf el cual contiene la documentacion de la aplicacion 
+        /// </summary>
+        /// <returns>FileResult</returns>
         [HttpGet]
         public FileResult Documentation()
         {
             return File("~/Content/Files/Docs/Assignation de cuentas.pdf", "application/pdf");
         }
 
+        /// <summary>
+        /// Corre el proceso que asigna las cuentas
+        /// </summary>
+        /// <returns>ActionResult</returns>
         [HttpPost]
         public ActionResult Assign()
         {
@@ -146,6 +167,42 @@ namespace AsignacionDeCuentas.Controllers
             }
 
             return View("Index", asscResult);
+        }
+    
+        /// <summary>
+        /// Return a view with assigned account
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ViewResult Assigned()
+        {
+            string userCode = Session["UserCode"].ToString();
+            string location = Server.MapPath("~/Content/Files/Excel/Assigned/");
+            AccountBusiness accountBusiness = new AccountBusiness();           
+            List<AssignedResult> assigneds = accountBusiness.GetSpectedAssigment(userCode);
+            accountBusiness.WriteAssignedToExcel(assigneds, "assigned", "Assigned_" + userCode, location);
+
+            return View(assigneds);
+        }
+
+        /// <summary>
+        /// Return a view with the ivalid accounts.
+        /// </summary>
+        /// <returns>ViewResult</returns>
+        [HttpGet]
+        public ViewResult InValid()
+        {            
+            string userCode = Session["UserCode"].ToString();
+            string location = Server.MapPath("~/Content/Files/Excel/Invalid/Invalid_" + userCode + ".xlsx");
+            AccountBusiness accountBusiness = new AccountBusiness();
+
+            if (!System.IO.File.Exists(location))
+	        {	 
+                return View(new List<Account>());
+	        }
+            
+            List<Account> invalids = accountBusiness.GetInvalalidAccountFromExcel(location,Provider.XLSX,"Invalid");
+            return View(invalids);
         }
     }
 }

@@ -194,28 +194,15 @@
                                         </li>
                                     }
 
-                                    @if (File.Exists(Server.MapPath("~/Content/Files/Excel/Assigned/Assigned_" + Session["UserCode"] + ".xlsx")))
-                                    {
-                                        <li class="active-link">
-                                            <a href="@Url.Action("GetAssignedExcel", "Account")">
-                                                <i class="fa fa-check"></i>
-                                                <span class="menu-title">
-                                                    <strong>Cuentas Asignadas</strong>
-                                                </span>
-                                            </a>
-                                        </li>
-                                    }
-                                    else
-                                    {
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-check"></i>
-                                                <span class="menu-title">
-                                                    <strong>Cuentas Asignadas</strong>
-                                                </span>
-                                            </a>
-                                        </li>
-                                    }
+                                    <li class="active-link">
+                                        <a href="@Url.Action("Assigned", "Account")">
+                                            <i class="fa fa-check"></i>
+                                            <span class="menu-title">
+                                                <strong>Cuentas Asignadas</strong>
+                                            </span>
+                                        </a>
+                                    </li>
+
                                     <li class="active-link">
                                         <a href="@Url.Action("Index", "Supervisor")">
                                             <i class="fa fa-users"></i>

@@ -22,6 +22,10 @@ namespace AsignacionDeCuentas.Controllers
             return View(supervisors);
         }
 
+        /// <summary>
+        /// Obtiene el archivo excel con los supervisores
+        /// </summary>
+        /// <returns>FileResult</returns>
         public FileResult GetSupervisorFile()
         {
             return File("~/Content/Files/Excel/Supervisor/Supervisors.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");

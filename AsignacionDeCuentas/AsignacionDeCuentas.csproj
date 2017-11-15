@@ -1552,6 +1552,8 @@
     <Content Include="Views\Assignment\CreateAccount.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Supervisor\Index.cshtml" />
+    <Content Include="Views\Account\InValid.cshtml" />
+    <Content Include="Views\Account\Assigned.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

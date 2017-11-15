@@ -27,6 +27,12 @@ namespace DataAccess
             excelOp = new ExcelOperation();
         }
 
+        /// <summary>
+        /// Inserta las asignaciones ne la tabla de assigment
+        /// </summary>
+        /// <param name="statement">La cuntas que se insertaran</param>
+        /// <param name="userCode">El usuario logueado en el sistema</param>
+        /// <returns>AssignmentResult</returns>
         public AssignmentResult InsertAssignment(StatementResult statement, string userCode)
         {
             int count = 0;
@@ -92,6 +98,13 @@ namespace DataAccess
             };
         }
 
+        /// <summary>
+        /// Genera las cuantas que se insertaran.
+        /// </summary>
+        /// <param name="fileNameWithLocation">la clocalizacion del archivo</param>
+        /// <param name="provider">Si es xsl, o xlsx</param>
+        /// <param name="sheet">Hoja de excel</param>
+        /// <returns>StatementResult</returns>
         public StatementResult GenerateAssigncSentences(string fileNameWithLocation, Provider provider, string sheet)
         {
             StatementResult statement = new StatementResult();
@@ -143,6 +156,10 @@ namespace DataAccess
             return statement;
         }
 
+        /// <summary>
+        /// Elimina las asignaciones invalidas de la tabla de asignaciones
+        /// </summary>
+        /// <param name="userCode">Usuario logueado en el sistema</param>
         public void DeleteAssignment(string userCode)
         {
             OracleParameter[] prm = 
