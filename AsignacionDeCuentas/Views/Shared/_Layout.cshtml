@@ -171,7 +171,7 @@
                                         </a>
                                     </li>
 
-                                    @if (File.Exists(Server.MapPath("~/Content/Files/Excel/Invalid/Invalid_" + Session["UserCode"] + ".xlsx")))
+                                    @*@if (File.Exists(Server.MapPath("~/Content/Files/Excel/Invalid/Invalid_" + Session["UserCode"] + ".xlsx")))
                                     {
                                         <li class="active-link">
                                             <a href="@Url.Action("GetInvalidFromExcel", "Account")">
@@ -192,7 +192,7 @@
                                                 </span>
                                             </a>
                                         </li>
-                                    }
+                                    }*@
 
                                     <li class="active-link">
                                         <a href="@Url.Action("Assigned", "Account")">
@@ -216,6 +216,14 @@
                                             <i class="fa fa-file-text"></i>
                                             <span class="menu-title">
                                                 <strong>Documentación</strong>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li class="active-link">
+                                        <a href="@Url.Action("Potenciales", "Account")" target="_blank">
+                                            <i class="fa fa-files-o"></i>
+                                            <span class="menu-title">
+                                                <strong>Potenciales</strong>
                                             </span>
                                         </a>
                                     </li>

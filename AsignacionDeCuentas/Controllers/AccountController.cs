@@ -108,6 +108,16 @@ namespace AsignacionDeCuentas.Controllers
         }
 
         /// <summary>
+        /// Permite descargar los potenciales. 
+        /// </summary>
+        /// <returns>FileResult</returns>
+        [HttpGet]
+        public FileResult Potenciales()
+        {
+            return File("\\\\eclipse\\Intranet\\webdir\\AcctMgmtToolDR\\DR_Interface\\RollOver\\Reportes\\Potenciales.csv", "text/csv", "Potenciales.csv");
+        }
+
+        /// <summary>
         /// Corre el proceso que asigna las cuentas
         /// </summary>
         /// <returns>ActionResult</returns>
